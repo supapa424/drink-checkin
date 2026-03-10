@@ -4,309 +4,164 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>健康打卡 App</title>
-  <meta name="theme-color" content="#4f46e5" />
-   <!-- iPhone 图标 -->
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#6750A4" />
   <link rel="manifest" href="manifest.json" />
   <style>
     :root {
-      --bg: #f6f8fc;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --primary: #4f46e5;
-      --primary-soft: #e0e7ff;
-      --green: #16a34a;
-      --green-soft: #dcfce7;
-      --orange: #f59e0b;
-      --orange-soft: #fef3c7;
-      --pink: #ec4899;
-      --pink-soft: #fce7f3;
-      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-      --radius: 20px;
+      --bg: #f6f3fb;
+      --surface: #fff;
+      --surface-2: #f3edf7;
+      --surface-3: #ece6f0;
+      --text: #1d1b20;
+      --muted: #625b71;
+      --primary: #6750a4;
+      --primary-soft: #eaddff;
+      --secondary: #625b71;
+      --secondary-soft: #e8def8;
+      --tertiary: #7d5260;
+      --tertiary-soft: #ffd8e4;
+      --green: #2e7d32;
+      --green-soft: #d9f2dc;
+      --orange: #b26a00;
+      --orange-soft: #ffe0b2;
+      --outline: #cac4d0;
+      --shadow: 0 10px 28px rgba(28, 27, 31, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 16px;
     }
 
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); }
+    html, body { margin: 0; padding: 0; font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: linear-gradient(180deg, #f8f5fb 0%, #f3eff8 100%); color: var(--text); }
     body { min-height: 100vh; }
 
-    .app {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 20px 16px 96px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    h1 {
-      font-size: 28px;
-      line-height: 1.2;
-      margin: 0;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .sub {
-      color: var(--muted);
-      font-size: 14px;
-      margin-top: 6px;
-    }
-
-    .btn, button {
-      border: none;
-      background: var(--card);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: var(--shadow);
-      cursor: pointer;
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-    }
-
-    .btn:hover, button:hover { transform: translateY(-1px); }
-    .btn-primary { background: var(--primary); color: #fff; }
-
-    .grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .summary-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin-bottom: 16px;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .metric-card h3,
-    .section-title {
-      margin: 0 0 10px;
-      font-size: 15px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .metric-value {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .metric-note {
-      margin-top: 8px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .progress-wrap {
-      margin-top: 12px;
-    }
-
-    .progress-bar {
-      height: 10px;
-      background: #e5e7eb;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0;
-      border-radius: 999px;
-      transition: width .25s ease;
-    }
-
-    .fill-blue { background: linear-gradient(90deg, #60a5fa, #4f46e5); }
-    .fill-green { background: linear-gradient(90deg, #4ade80, #16a34a); }
-    .fill-pink { background: linear-gradient(90deg, #f472b6, #ec4899); }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    .action-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .chip {
-      border: none;
-      border-radius: 999px;
-      padding: 12px 16px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: none;
-    }
-
-    .chip-water { background: var(--primary-soft); color: var(--primary); }
-    .chip-water:hover { background: #c7d2fe; }
-
-    .counter-box {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 12px;
-      background: var(--orange-soft);
-      border-radius: 18px;
-      padding: 14px;
-    }
-
-    .counter-num {
-      font-size: 34px;
-      font-weight: 700;
-    }
-
-    .counter-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .round-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      font-size: 22px;
-      padding: 0;
-      background: #fff;
-    }
-
-    .exercise-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .exercise-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      background: #f8fafc;
-      border-radius: 16px;
-      padding: 14px;
-      border: 1px solid #eef2f7;
-    }
-
-    .exercise-name {
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .toggle {
-      min-width: 92px;
-      text-align: center;
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-weight: 700;
-    }
-
-    .toggle.off { background: #e5e7eb; color: #4b5563; }
-    .toggle.on { background: var(--green-soft); color: var(--green); }
-
-    .history-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .history-item {
-      background: #f8fafc;
-      border: 1px solid #eef2f7;
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .history-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
-      align-items: center;
-    }
-
-    .history-date {
-      font-weight: 700;
-      font-size: 15px;
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .tag {
-      font-size: 12px;
-      font-weight: 700;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #4338ca;
-    }
-
-    .empty {
-      color: var(--muted);
-      text-align: center;
-      padding: 20px 0 8px;
-    }
-
-    .footer-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: center;
-      backdrop-filter: blur(12px);
-      background: rgba(246, 248, 252, 0.8);
-      padding: 12px 16px 18px;
-    }
-
-    .nav-wrap {
-      width: min(760px, calc(100% - 32px));
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
+    .app { max-width: 880px; margin: 0 auto; padding: 20px 16px 104px; }
     .screen { display: none; }
     .screen.active { display: block; }
 
-    .pill {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #4338ca;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
+    .topbar { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
+    h1 { margin: 0; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; }
+    .sub { color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); padding: 6px 10px; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
 
-    @media (max-width: 720px) {
-      .summary-grid, .two-col { grid-template-columns: 1fr; }
+    button, .btn {
+      border: none;
+      border-radius: 18px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: .18s ease;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+    button:hover, .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-tonal { background: var(--primary-soft); color: var(--primary); }
+    .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--outline); box-shadow: none; }
+
+    .card {
+      background: rgba(255,255,255,.92);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+    }
+    .card + .card { margin-top: 16px; }
+    .section-title { margin: 0 0 10px; font-size: 15px; font-weight: 700; color: var(--muted); }
+
+    .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-bottom: 16px; }
+    .metric-value { font-size: 28px; font-weight: 800; letter-spacing: -.03em; }
+    .metric-note { margin-top: 8px; color: var(--muted); font-size: 12px; }
+
+    .progress-wrap { margin-top: 12px; }
+    .progress-bar { height: 10px; background: #e8e0ef; border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0; border-radius: 999px; transition: width .25s ease; }
+    .fill-purple { background: linear-gradient(90deg, #8b6fd6, #6750a4); }
+    .fill-green { background: linear-gradient(90deg, #66bb6a, #2e7d32); }
+    .fill-pink { background: linear-gradient(90deg, #d16a8b, #7d5260); }
+
+    .two-col { display: grid; grid-template-columns: 1.1fr .9fr; gap: 16px; margin-bottom: 16px; }
+    .week-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
+
+    .action-row, .chip-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .chip { border-radius: 999px; padding: 12px 16px; box-shadow: none; }
+    .chip-water { background: var(--primary-soft); color: var(--primary); }
+    .chip-water:hover { background: #dcccf9; }
+
+    .counter-box { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: #fff7ec; border-radius: 22px; padding: 14px; margin-top: 12px; }
+    .counter-num { font-size: 34px; font-weight: 800; }
+    .counter-actions { display: flex; gap: 10px; }
+    .round-btn { width: 48px; height: 48px; border-radius: 50%; padding: 0; font-size: 22px; background: white; }
+
+    .exercise-list { display: grid; gap: 12px; margin-top: 12px; }
+    .exercise-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px; border-radius: 20px; background: var(--surface-2); border: 1px solid #eee7f5; }
+    .exercise-name { font-size: 16px; font-weight: 700; }
+    .exercise-meta { margin-top: 4px; color: var(--muted); font-size: 13px; }
+    .exercise-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .toggle { min-width: 92px; text-align: center; border-radius: 999px; padding: 10px 14px; box-shadow: none; }
+    .toggle.off { background: #e8e6eb; color: #4f4a57; }
+    .toggle.on { background: var(--green-soft); color: var(--green); }
+    .timer-btn { background: var(--tertiary-soft); color: var(--tertiary); box-shadow: none; }
+
+    .record-panel { background: var(--surface-2); border-radius: 20px; padding: 14px; margin-top: 12px; }
+    .field-label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 700; }
+    .input {
+      width: 100%; border: 1px solid var(--outline); background: white; color: var(--text);
+      border-radius: 14px; padding: 12px 14px; font-size: 14px; outline: none;
+    }
+    .input:focus { border-color: var(--primary); }
+
+    .date-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
+    .date-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .stat-box { background: var(--surface-2); border-radius: 18px; padding: 14px; }
+    .stat-label { color: var(--muted); font-size: 12px; font-weight: 700; }
+    .stat-value { margin-top: 6px; font-size: 24px; font-weight: 800; letter-spacing: -.03em; }
+
+    .chart-wrap { margin-top: 14px; background: var(--surface-2); border-radius: 20px; padding: 14px; }
+    .chart-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .chart { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; align-items: end; min-height: 180px; }
+    .bar-col { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; }
+    .bar-stack { display: flex; align-items: end; height: 140px; width: 100%; justify-content: center; }
+    .bar {
+      width: 100%; max-width: 34px; min-height: 8px; border-radius: 14px 14px 8px 8px;
+      background: linear-gradient(180deg, #9a82db 0%, #6750a4 100%);
+    }
+    .bar-label { font-size: 11px; color: var(--muted); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-value { font-size: 11px; font-weight: 700; color: var(--primary); }
+
+    .history-list { display: grid; gap: 12px; }
+    .history-item { background: var(--surface-2); border: 1px solid #eee7f5; border-radius: 20px; padding: 14px; }
+    .history-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 8px; }
+    .history-date { font-weight: 800; font-size: 15px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .tag { font-size: 12px; font-weight: 700; padding: 7px 10px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); }
+    .empty { text-align: center; color: var(--muted); padding: 20px 0; }
+
+    .footer-nav {
+      position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center;
+      padding: 12px 16px 18px; backdrop-filter: blur(12px); background: rgba(245, 241, 249, .82);
+    }
+    .nav-wrap { width: min(880px, calc(100% - 32px)); display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .toast {
+      position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%) translateY(16px);
+      background: #1d1b20; color: white; padding: 12px 16px; border-radius: 999px; font-size: 13px; opacity: 0; pointer-events: none; transition: .22s ease;
+      box-shadow: var(--shadow); z-index: 20;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 760px) {
+      .summary-grid, .two-col, .week-grid { grid-template-columns: 1fr; }
       .metric-value { font-size: 24px; }
-      h1 { font-size: 24px; }
+      h1 { font-size: 26px; }
+      .date-row { grid-template-columns: 1fr; }
+      .exercise-item { flex-direction: column; align-items: stretch; }
+      .exercise-actions { justify-content: stretch; }
+      .exercise-actions button { flex: 1; }
     }
   </style>
 </head>
@@ -315,37 +170,45 @@
     <section id="homeScreen" class="screen active">
       <div class="topbar">
         <div>
+          <div class="pill">Material 风格</div>
           <h1>健康打卡</h1>
           <div class="sub" id="todayLabel"></div>
         </div>
-        <button class="btn-primary" id="resetTodayBtn">重置今日</button>
+        <button class="btn-primary" id="resetTodayBtn">重置当前日期</button>
       </div>
 
-      <div class="grid summary-grid">
-        <div class="card metric-card">
-          <h3>饮水进度</h3>
-          <div class="metric-value"><span id="waterValue">0</span> / 2000 ml</div>
-          <div class="progress-wrap">
-            <div class="progress-bar"><div id="waterBar" class="progress-fill fill-blue"></div></div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="section-title">补录 / 切换记录日期</div>
+        <div class="date-row">
+          <div>
+            <label class="field-label" for="recordDateInput">记录日期</label>
+            <input class="input" id="recordDateInput" type="date" />
           </div>
+          <div class="date-actions">
+            <button class="btn-tonal" id="useSelectedDateBtn">打开该日期</button>
+            <button class="btn-outline" id="backToTodayBtn">回到今天</button>
+          </div>
+        </div>
+        <div class="sub" style="margin-top:10px;">你可以切到过去任意一天进行补录，所有数据都保存在本地。</div>
+      </div>
+
+      <div class="summary-grid">
+        <div class="card">
+          <div class="section-title">饮水进度</div>
+          <div class="metric-value"><span id="waterValue">0</span> / 2000 ml</div>
+          <div class="progress-wrap"><div class="progress-bar"><div id="waterBar" class="progress-fill fill-purple"></div></div></div>
           <div class="metric-note">目标 2000 ml / 天</div>
         </div>
-
-        <div class="card metric-card">
-          <h3>动作完成度</h3>
+        <div class="card">
+          <div class="section-title">动作完成度</div>
           <div class="metric-value"><span id="exerciseValue">0</span> / 3</div>
-          <div class="progress-wrap">
-            <div class="progress-bar"><div id="exerciseBar" class="progress-fill fill-green"></div></div>
-          </div>
+          <div class="progress-wrap"><div class="progress-bar"><div id="exerciseBar" class="progress-fill fill-green"></div></div></div>
           <div class="metric-note">臀桥 / 平板支撑 / 蚌式开合</div>
         </div>
-
-        <div class="card metric-card">
-          <h3>总进度</h3>
+        <div class="card">
+          <div class="section-title">总进度</div>
           <div class="metric-value"><span id="totalPercent">0</span>%</div>
-          <div class="progress-wrap">
-            <div class="progress-bar"><div id="totalBar" class="progress-fill fill-pink"></div></div>
-          </div>
+          <div class="progress-wrap"><div class="progress-bar"><div id="totalBar" class="progress-fill fill-pink"></div></div></div>
           <div class="metric-note">饮水 + 动作综合</div>
         </div>
       </div>
@@ -353,11 +216,18 @@
       <div class="two-col">
         <div class="card">
           <div class="section-title">记录喝水</div>
-          <div class="sub">点击快速增加饮水量</div>
-          <div class="action-row">
+          <div class="sub">快捷增加饮水量，支持补录到选定日期</div>
+          <div class="chip-row">
             <button class="chip chip-water" data-water="100">+100 ml</button>
             <button class="chip chip-water" data-water="350">+350 ml</button>
             <button class="chip chip-water" data-water="500">+500 ml</button>
+          </div>
+          <div class="record-panel">
+            <label class="field-label" for="customWaterInput">自定义补录饮水量（ml）</label>
+            <div class="date-actions">
+              <input class="input" id="customWaterInput" type="number" min="1" step="1" placeholder="例如 250" />
+              <button class="btn-tonal" id="addCustomWaterBtn">补录饮水</button>
+            </div>
           </div>
         </div>
 
@@ -365,7 +235,7 @@
           <div class="section-title">上厕所次数</div>
           <div class="counter-box">
             <div>
-              <div class="sub">今日累计</div>
+              <div class="sub">当前日期累计</div>
               <div class="counter-num" id="toiletCount">0</div>
             </div>
             <div class="counter-actions">
@@ -373,11 +243,19 @@
               <button class="round-btn" id="toiletPlusBtn">+</button>
             </div>
           </div>
+          <div class="record-panel">
+            <label class="field-label" for="customToiletInput">自定义补录次数</label>
+            <div class="date-actions">
+              <input class="input" id="customToiletInput" type="number" min="1" step="1" placeholder="例如 2" />
+              <button class="btn-tonal" id="addCustomToiletBtn">补录次数</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="card">
         <div class="section-title">今日动作</div>
+        <div class="sub">平板支撑支持 1 分钟倒计时，结束后自动标记完成</div>
         <div class="exercise-list" id="exerciseList"></div>
       </div>
     </section>
@@ -385,11 +263,31 @@
     <section id="historyScreen" class="screen">
       <div class="topbar">
         <div>
-          <div class="pill">历史记录</div>
-          <h1>全部记录</h1>
-          <div class="sub">按日期自动保存到本地</div>
+          <div class="pill">统计与历史</div>
+          <h1>所有记录</h1>
+          <div class="sub">最近 7 天趋势 + 每周汇总 + 单日历史</div>
         </div>
       </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div class="section-title">最近 7 天统计</div>
+        <div class="week-grid">
+          <div class="stat-box"><div class="stat-label">7 天饮水总量</div><div class="stat-value" id="weekWater">0</div><div class="sub">ml</div></div>
+          <div class="stat-box"><div class="stat-label">日均饮水</div><div class="stat-value" id="weekAvgWater">0</div><div class="sub">ml / 天</div></div>
+          <div class="stat-box"><div class="stat-label">上厕所总次数</div><div class="stat-value" id="weekToilet">0</div><div class="sub">次</div></div>
+          <div class="stat-box"><div class="stat-label">动作完成天数</div><div class="stat-value" id="weekExerciseDays">0</div><div class="sub">/ 7 天</div></div>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-head">
+            <div>
+              <div class="field-label" style="margin:0;">健康趋势图</div>
+              <div class="sub">显示最近 7 天每日饮水量</div>
+            </div>
+          </div>
+          <div class="chart" id="waterChart"></div>
+        </div>
+      </div>
+
       <div id="historyList" class="history-list"></div>
     </section>
   </div>
@@ -401,35 +299,41 @@
     </div>
   </div>
 
+  <div id="toast" class="toast"></div>
+
   <script>
-    const STORAGE_KEY = 'health-check-pwa-v1';
+    const STORAGE_KEY = 'health-check-pwa-v2';
     const WATER_GOAL = 2000;
     const EXERCISES = ['臀桥', '平板支撑', '蚌式开合'];
+    const PLANK_SECONDS = 60;
 
     const $ = (id) => document.getElementById(id);
+    let timerState = { interval: null, targetExercise: null, remaining: PLANK_SECONDS };
 
-    function getTodayKey() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      const d = String(now.getDate()).padStart(2, '0');
+    function dateKeyFromDate(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
       return `${y}-${m}-${d}`;
     }
+
+    function getTodayKey() { return dateKeyFromDate(new Date()); }
 
     function formatDateLabel(dateKey) {
       const [y, m, d] = dateKey.split('-');
       return `${y}年${m}月${d}日`;
     }
 
+    function shortLabel(dateKey) {
+      const [, m, d] = dateKey.split('-');
+      return `${m}/${d}`;
+    }
+
     function defaultDayData() {
       return {
         water: 0,
         toilet: 0,
-        exercises: {
-          '臀桥': false,
-          '平板支撑': false,
-          '蚌式开合': false
-        },
+        exercises: { '臀桥': false, '平板支撑': false, '蚌式开合': false },
         updatedAt: new Date().toISOString()
       };
     }
@@ -445,38 +349,75 @@
       }
     }
 
-    function saveStore(store) {
+    function saveStore() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
     }
 
     let store = loadStore();
     let currentDate = getTodayKey();
 
-    function ensureTodayRecord() {
-      if (!store.records[currentDate]) {
-        store.records[currentDate] = defaultDayData();
-        saveStore(store);
-      }
+    function ensureDateRecord(dateKey = currentDate) {
+      if (!store.records[dateKey]) store.records[dateKey] = defaultDayData();
+      if (!store.records[dateKey].exercises) store.records[dateKey].exercises = {};
       EXERCISES.forEach(name => {
-        if (typeof store.records[currentDate].exercises?.[name] !== 'boolean') {
-          store.records[currentDate].exercises[name] = false;
+        if (typeof store.records[dateKey].exercises[name] !== 'boolean') {
+          store.records[dateKey].exercises[name] = false;
         }
       });
     }
 
-    function updateTimestamp() {
-      store.records[currentDate].updatedAt = new Date().toISOString();
+    function updateTimestamp(dateKey = currentDate) {
+      ensureDateRecord(dateKey);
+      store.records[dateKey].updatedAt = new Date().toISOString();
+    }
+
+    function showToast(text) {
+      const el = $('toast');
+      el.textContent = text;
+      el.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => el.classList.remove('show'), 1600);
+    }
+
+    function isToday(dateKey) { return dateKey === getTodayKey(); }
+
+    function stopTimer() {
+      if (timerState.interval) clearInterval(timerState.interval);
+      timerState = { interval: null, targetExercise: null, remaining: PLANK_SECONDS };
+    }
+
+    function startPlankTimer() {
+      ensureDateRecord();
+      stopTimer();
+      timerState.targetExercise = '平板支撑';
+      timerState.remaining = PLANK_SECONDS;
+      renderHome();
+      timerState.interval = setInterval(() => {
+        timerState.remaining -= 1;
+        if (timerState.remaining <= 0) {
+          stopTimer();
+          store.records[currentDate].exercises['平板支撑'] = true;
+          updateTimestamp();
+          saveStore();
+          renderAll();
+          showToast('平板支撑已完成');
+          return;
+        }
+        renderHome();
+      }, 1000);
+      showToast('平板支撑开始计时');
     }
 
     function renderHome() {
-      ensureTodayRecord();
+      ensureDateRecord();
       const data = store.records[currentDate];
       const waterPct = Math.min(100, Math.round((data.water / WATER_GOAL) * 100));
       const exerciseDone = EXERCISES.filter(name => data.exercises[name]).length;
       const exercisePct = Math.round((exerciseDone / EXERCISES.length) * 100);
       const totalPct = Math.round((waterPct + exercisePct) / 2);
 
-      $('todayLabel').textContent = `今天 · ${formatDateLabel(currentDate)}`;
+      $('todayLabel').textContent = `${isToday(currentDate) ? '今天' : '当前记录'} · ${formatDateLabel(currentDate)}`;
+      $('recordDateInput').value = currentDate;
       $('waterValue').textContent = data.water;
       $('exerciseValue').textContent = exerciseDone;
       $('totalPercent').textContent = totalPct;
@@ -489,17 +430,62 @@
       exerciseList.innerHTML = '';
       EXERCISES.forEach(name => {
         const done = !!data.exercises[name];
+        const isPlank = name === '平板支撑';
+        const isTiming = isPlank && timerState.interval && timerState.targetExercise === '平板支撑';
         const item = document.createElement('div');
         item.className = 'exercise-item';
         item.innerHTML = `
           <div>
             <div class="exercise-name">${name}</div>
-            <div class="sub">${done ? '今日已完成' : '今日未完成'}</div>
+            <div class="exercise-meta">${isPlank && isTiming ? `倒计时 ${timerState.remaining} 秒` : (done ? '当前日期已完成' : '当前日期未完成')}</div>
           </div>
-          <button class="toggle ${done ? 'on' : 'off'}" data-exercise="${name}">${done ? '已完成' : '去打卡'}</button>
+          <div class="exercise-actions">
+            ${isPlank ? `<button class="timer-btn" data-timer="plank">${isTiming ? '计时中' : '开始 1 分钟'}</button>` : ''}
+            <button class="toggle ${done ? 'on' : 'off'}" data-exercise="${name}">${done ? '已完成' : '去打卡'}</button>
+          </div>
         `;
         exerciseList.appendChild(item);
       });
+    }
+
+    function getLastNDates(n) {
+      const arr = [];
+      const today = new Date();
+      for (let i = n - 1; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        arr.push(dateKeyFromDate(d));
+      }
+      return arr;
+    }
+
+    function renderWeekStats() {
+      const dates = getLastNDates(7);
+      let totalWater = 0, totalToilet = 0, exerciseDays = 0;
+      dates.forEach(dateKey => {
+        const data = store.records[dateKey] || defaultDayData();
+        totalWater += data.water || 0;
+        totalToilet += data.toilet || 0;
+        const done = EXERCISES.filter(name => data.exercises?.[name]).length;
+        if (done === EXERCISES.length) exerciseDays += 1;
+      });
+      $('weekWater').textContent = totalWater;
+      $('weekAvgWater').textContent = Math.round(totalWater / 7);
+      $('weekToilet').textContent = totalToilet;
+      $('weekExerciseDays').textContent = exerciseDays;
+
+      const maxWater = Math.max(WATER_GOAL, ...dates.map(d => store.records[d]?.water || 0), 1);
+      $('waterChart').innerHTML = dates.map(dateKey => {
+        const water = store.records[dateKey]?.water || 0;
+        const height = Math.max(8, Math.round((water / maxWater) * 140));
+        return `
+          <div class="bar-col">
+            <div class="bar-value">${water}</div>
+            <div class="bar-stack"><div class="bar" style="height:${height}px"></div></div>
+            <div class="bar-label">${shortLabel(dateKey)}</div>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderHistory() {
@@ -509,7 +495,6 @@
         historyList.innerHTML = '<div class="card empty">还没有记录</div>';
         return;
       }
-
       historyList.innerHTML = entries.map(([date, data]) => {
         const exerciseDone = EXERCISES.filter(name => data.exercises?.[name]).length;
         const waterPct = Math.min(100, Math.round(((data.water || 0) / WATER_GOAL) * 100));
@@ -533,79 +518,108 @@
       }).join('');
     }
 
-    function persistAndRender() {
-      updateTimestamp();
-      saveStore(store);
+    function renderAll() {
       renderHome();
+      renderWeekStats();
       renderHistory();
     }
 
+    function persistAndRender() {
+      updateTimestamp();
+      saveStore();
+      renderAll();
+    }
+
     function addWater(amount) {
-      ensureTodayRecord();
+      if (!Number.isFinite(amount) || amount <= 0) return;
+      ensureDateRecord();
       store.records[currentDate].water += amount;
       persistAndRender();
+      showToast(`已记录 ${amount} ml`);
+    }
+
+    function addToilet(amount) {
+      if (!Number.isFinite(amount) || amount <= 0) return;
+      ensureDateRecord();
+      store.records[currentDate].toilet += amount;
+      persistAndRender();
+      showToast(`已补录 ${amount} 次`);
     }
 
     function changeToilet(delta) {
-      ensureTodayRecord();
+      ensureDateRecord();
       store.records[currentDate].toilet = Math.max(0, store.records[currentDate].toilet + delta);
       persistAndRender();
     }
 
     function toggleExercise(name) {
-      ensureTodayRecord();
+      ensureDateRecord();
       store.records[currentDate].exercises[name] = !store.records[currentDate].exercises[name];
       persistAndRender();
+      showToast(store.records[currentDate].exercises[name] ? `${name} 已完成` : `${name} 已取消`);
     }
 
-    function resetToday() {
+    function resetCurrentDate() {
       store.records[currentDate] = defaultDayData();
-      saveStore(store);
-      renderHome();
-      renderHistory();
+      saveStore();
+      stopTimer();
+      renderAll();
+      showToast('当前日期已重置');
+    }
+
+    function openDate(dateKey) {
+      if (!dateKey) return;
+      currentDate = dateKey;
+      ensureDateRecord();
+      stopTimer();
+      renderAll();
+      showToast(`已切换到 ${formatDateLabel(dateKey)}`);
     }
 
     function showScreen(screen) {
-      const home = $('homeScreen');
-      const history = $('historyScreen');
-      const homeBtn = $('goHomeBtn');
-      const historyBtn = $('goHistoryBtn');
-
-      if (screen === 'history') {
-        home.classList.remove('active');
-        history.classList.add('active');
-        homeBtn.classList.remove('btn-primary');
-        historyBtn.classList.add('btn-primary');
-      } else {
-        history.classList.remove('active');
-        home.classList.add('active');
-        historyBtn.classList.remove('btn-primary');
-        homeBtn.classList.add('btn-primary');
-      }
+      $('homeScreen').classList.toggle('active', screen === 'home');
+      $('historyScreen').classList.toggle('active', screen === 'history');
+      $('goHomeBtn').classList.toggle('btn-primary', screen === 'home');
+      $('goHistoryBtn').classList.toggle('btn-primary', screen === 'history');
     }
 
     document.addEventListener('click', (e) => {
       const waterBtn = e.target.closest('[data-water]');
       const exerciseBtn = e.target.closest('[data-exercise]');
+      const timerBtn = e.target.closest('[data-timer="plank"]');
       if (waterBtn) addWater(Number(waterBtn.dataset.water));
       if (exerciseBtn) toggleExercise(exerciseBtn.dataset.exercise);
+      if (timerBtn && !timerState.interval) startPlankTimer();
     });
 
     $('toiletPlusBtn').addEventListener('click', () => changeToilet(1));
     $('toiletMinusBtn').addEventListener('click', () => changeToilet(-1));
-    $('resetTodayBtn').addEventListener('click', resetToday);
+    $('resetTodayBtn').addEventListener('click', resetCurrentDate);
     $('goHomeBtn').addEventListener('click', () => showScreen('home'));
     $('goHistoryBtn').addEventListener('click', () => showScreen('history'));
+    $('useSelectedDateBtn').addEventListener('click', () => openDate($('recordDateInput').value));
+    $('backToTodayBtn').addEventListener('click', () => openDate(getTodayKey()));
+    $('addCustomWaterBtn').addEventListener('click', () => {
+      const value = Number($('customWaterInput').value);
+      if (value > 0) {
+        addWater(value);
+        $('customWaterInput').value = '';
+      }
+    });
+    $('addCustomToiletBtn').addEventListener('click', () => {
+      const value = Number($('customToiletInput').value);
+      if (value > 0) {
+        addToilet(value);
+        $('customToiletInput').value = '';
+      }
+    });
 
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(console.error);
-      });
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
     }
 
-    ensureTodayRecord();
-    renderHome();
-    renderHistory();
+    ensureDateRecord();
+    renderAll();
   </script>
 </body>
 </html>
