@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>健康打卡 App</title>
+  <meta name="theme-color" content="#4f46e5" />
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #4f46e5;
+      --primary-soft: #e0e7ff;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+      --orange: #f59e0b;
+      --orange-soft: #fef3c7;
+      --pink: #ec4899;
+      --pink-soft: #fce7f3;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); }
+    body { min-height: 100vh; }
+
+    .app {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 20px 16px 96px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: 28px;
+      line-height: 1.2;
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .btn, button {
+      border: none;
+      background: var(--card);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    .btn:hover, button:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: #fff; }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .metric-card h3,
+    .section-title {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .metric-value {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .metric-note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .progress-wrap {
+      margin-top: 12px;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    .fill-blue { background: linear-gradient(90deg, #60a5fa, #4f46e5); }
+    .fill-green { background: linear-gradient(90deg, #4ade80, #16a34a); }
+    .fill-pink { background: linear-gradient(90deg, #f472b6, #ec4899); }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: none;
+    }
+
+    .chip-water { background: var(--primary-soft); color: var(--primary); }
+    .chip-water:hover { background: #c7d2fe; }
+
+    .counter-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      background: var(--orange-soft);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .counter-num {
+      font-size: 34px;
+      font-weight: 700;
+    }
+
+    .counter-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .round-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 22px;
+      padding: 0;
+      background: #fff;
+    }
+
+    .exercise-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .exercise-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid #eef2f7;
+    }
+
+    .exercise-name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .toggle {
+      min-width: 92px;
+      text-align: center;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+    }
+
+    .toggle.off { background: #e5e7eb; color: #4b5563; }
+    .toggle.on { background: var(--green-soft); color: var(--green); }
+
+    .history-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .history-item {
+      background: #f8fafc;
+      border: 1px solid #eef2f7;
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .history-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+
+    .history-date {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4338ca;
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 20px 0 8px;
+    }
+
+    .footer-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      backdrop-filter: blur(12px);
+      background: rgba(246, 248, 252, 0.8);
+      padding: 12px 16px 18px;
+    }
+
+    .nav-wrap {
+      width: min(760px, calc(100% - 32px));
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 720px) {
+      .summary-grid, .two-col { grid-template-columns: 1fr; }
+      .metric-value { font-size: 24px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section id="homeScreen" class="screen active">
+      <div class="topbar">
+        <div>
+          <h1>健康打卡</h1>
+          <div class="sub" id="todayLabel"></div>
+        </div>
+        <button class="btn-primary" id="resetTodayBtn">重置今日</button>
+      </div>
+
+      <div class="grid summary-grid">
+        <div class="card metric-card">
+          <h3>饮水进度</h3>
+          <div class="metric-value"><span id="waterValue">0</span> / 2000 ml</div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div id="waterBar" class="progress-fill fill-blue"></div></div>
+          </div>
+          <div class="metric-note">目标 2000 ml / 天</div>
+        </div>
+
+        <div class="card metric-card">
+          <h3>动作完成度</h3>
+          <div class="metric-value"><span id="exerciseValue">0</span> / 3</div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div id="exerciseBar" class="progress-fill fill-green"></div></div>
+          </div>
+          <div class="metric-note">臀桥 / 平板支撑 / 蚌式开合</div>
+        </div>
+
+        <div class="card metric-card">
+          <h3>总进度</h3>
+          <div class="metric-value"><span id="totalPercent">0</span>%</div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div id="totalBar" class="progress-fill fill-pink"></div></div>
+          </div>
+          <div class="metric-note">饮水 + 动作综合</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="section-title">记录喝水</div>
+          <div class="sub">点击快速增加饮水量</div>
+          <div class="action-row">
+            <button class="chip chip-water" data-water="100">+100 ml</button>
+            <button class="chip chip-water" data-water="350">+350 ml</button>
+            <button class="chip chip-water" data-water="500">+500 ml</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">上厕所次数</div>
+          <div class="counter-box">
+            <div>
+              <div class="sub">今日累计</div>
+              <div class="counter-num" id="toiletCount">0</div>
+            </div>
+            <div class="counter-actions">
+              <button class="round-btn" id="toiletMinusBtn">−</button>
+              <button class="round-btn" id="toiletPlusBtn">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">今日动作</div>
+        <div class="exercise-list" id="exerciseList"></div>
+      </div>
+    </section>
+
+    <section id="historyScreen" class="screen">
+      <div class="topbar">
+        <div>
+          <div class="pill">历史记录</div>
+          <h1>全部记录</h1>
+          <div class="sub">按日期自动保存到本地</div>
+        </div>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+  </div>
+
+  <div class="footer-nav">
+    <div class="nav-wrap">
+      <button id="goHomeBtn" class="btn-primary">今日</button>
+      <button id="goHistoryBtn">所有记录</button>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'health-check-pwa-v1';
+    const WATER_GOAL = 2000;
+    const EXERCISES = ['臀桥', '平板支撑', '蚌式开合'];
+
+    const $ = (id) => document.getElementById(id);
+
+    function getTodayKey() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function formatDateLabel(dateKey) {
+      const [y, m, d] = dateKey.split('-');
+      return `${y}年${m}月${d}日`;
+    }
+
+    function defaultDayData() {
+      return {
+        water: 0,
+        toilet: 0,
+        exercises: {
+          '臀桥': false,
+          '平板支撑': false,
+          '蚌式开合': false
+        },
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    function loadStore() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return { records: {} };
+      try {
+        const parsed = JSON.parse(raw);
+        return parsed && parsed.records ? parsed : { records: {} };
+      } catch {
+        return { records: {} };
+      }
+    }
+
+    function saveStore(store) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+    }
+
+    let store = loadStore();
+    let currentDate = getTodayKey();
+
+    function ensureTodayRecord() {
+      if (!store.records[currentDate]) {
+        store.records[currentDate] = defaultDayData();
+        saveStore(store);
+      }
+      EXERCISES.forEach(name => {
+        if (typeof store.records[currentDate].exercises?.[name] !== 'boolean') {
+          store.records[currentDate].exercises[name] = false;
+        }
+      });
+    }
+
+    function updateTimestamp() {
+      store.records[currentDate].updatedAt = new Date().toISOString();
+    }
+
+    function renderHome() {
+      ensureTodayRecord();
+      const data = store.records[currentDate];
+      const waterPct = Math.min(100, Math.round((data.water / WATER_GOAL) * 100));
+      const exerciseDone = EXERCISES.filter(name => data.exercises[name]).length;
+      const exercisePct = Math.round((exerciseDone / EXERCISES.length) * 100);
+      const totalPct = Math.round((waterPct + exercisePct) / 2);
+
+      $('todayLabel').textContent = `今天 · ${formatDateLabel(currentDate)}`;
+      $('waterValue').textContent = data.water;
+      $('exerciseValue').textContent = exerciseDone;
+      $('totalPercent').textContent = totalPct;
+      $('toiletCount').textContent = data.toilet;
+      $('waterBar').style.width = `${waterPct}%`;
+      $('exerciseBar').style.width = `${exercisePct}%`;
+      $('totalBar').style.width = `${totalPct}%`;
+
+      const exerciseList = $('exerciseList');
+      exerciseList.innerHTML = '';
+      EXERCISES.forEach(name => {
+        const done = !!data.exercises[name];
+        const item = document.createElement('div');
+        item.className = 'exercise-item';
+        item.innerHTML = `
+          <div>
+            <div class="exercise-name">${name}</div>
+            <div class="sub">${done ? '今日已完成' : '今日未完成'}</div>
+          </div>
+          <button class="toggle ${done ? 'on' : 'off'}" data-exercise="${name}">${done ? '已完成' : '去打卡'}</button>
+        `;
+        exerciseList.appendChild(item);
+      });
+    }
+
+    function renderHistory() {
+      const historyList = $('historyList');
+      const entries = Object.entries(store.records).sort((a, b) => b[0].localeCompare(a[0]));
+      if (!entries.length) {
+        historyList.innerHTML = '<div class="card empty">还没有记录</div>';
+        return;
+      }
+
+      historyList.innerHTML = entries.map(([date, data]) => {
+        const exerciseDone = EXERCISES.filter(name => data.exercises?.[name]).length;
+        const waterPct = Math.min(100, Math.round(((data.water || 0) / WATER_GOAL) * 100));
+        const exercisePct = Math.round((exerciseDone / EXERCISES.length) * 100);
+        const totalPct = Math.round((waterPct + exercisePct) / 2);
+        const doneTags = EXERCISES.filter(name => data.exercises?.[name]);
+        return `
+          <div class="history-item">
+            <div class="history-top">
+              <div class="history-date">${formatDateLabel(date)}</div>
+              <div class="tag">总进度 ${totalPct}%</div>
+            </div>
+            <div class="sub">饮水 ${data.water || 0} ml · 上厕所 ${data.toilet || 0} 次 · 动作 ${exerciseDone}/3</div>
+            <div class="tag-row">
+              <span class="tag">饮水 ${waterPct}%</span>
+              <span class="tag">动作 ${exercisePct}%</span>
+              ${doneTags.length ? doneTags.map(tag => `<span class="tag">${tag}</span>`).join('') : '<span class="tag">暂无完成动作</span>'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function persistAndRender() {
+      updateTimestamp();
+      saveStore(store);
+      renderHome();
+      renderHistory();
+    }
+
+    function addWater(amount) {
+      ensureTodayRecord();
+      store.records[currentDate].water += amount;
+      persistAndRender();
+    }
+
+    function changeToilet(delta) {
+      ensureTodayRecord();
+      store.records[currentDate].toilet = Math.max(0, store.records[currentDate].toilet + delta);
+      persistAndRender();
+    }
+
+    function toggleExercise(name) {
+      ensureTodayRecord();
+      store.records[currentDate].exercises[name] = !store.records[currentDate].exercises[name];
+      persistAndRender();
+    }
+
+    function resetToday() {
+      store.records[currentDate] = defaultDayData();
+      saveStore(store);
+      renderHome();
+      renderHistory();
+    }
+
+    function showScreen(screen) {
+      const home = $('homeScreen');
+      const history = $('historyScreen');
+      const homeBtn = $('goHomeBtn');
+      const historyBtn = $('goHistoryBtn');
+
+      if (screen === 'history') {
+        home.classList.remove('active');
+        history.classList.add('active');
+        homeBtn.classList.remove('btn-primary');
+        historyBtn.classList.add('btn-primary');
+      } else {
+        history.classList.remove('active');
+        home.classList.add('active');
+        historyBtn.classList.remove('btn-primary');
+        homeBtn.classList.add('btn-primary');
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const waterBtn = e.target.closest('[data-water]');
+      const exerciseBtn = e.target.closest('[data-exercise]');
+      if (waterBtn) addWater(Number(waterBtn.dataset.water));
+      if (exerciseBtn) toggleExercise(exerciseBtn.dataset.exercise);
+    });
+
+    $('toiletPlusBtn').addEventListener('click', () => changeToilet(1));
+    $('toiletMinusBtn').addEventListener('click', () => changeToilet(-1));
+    $('resetTodayBtn').addEventListener('click', resetToday);
+    $('goHomeBtn').addEventListener('click', () => showScreen('home'));
+    $('goHistoryBtn').addEventListener('click', () => showScreen('history'));
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(console.error);
+      });
+    }
+
+    ensureTodayRecord();
+    renderHome();
+    renderHistory();
+  </script>
+</body>
+</html>

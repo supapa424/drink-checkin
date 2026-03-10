@@ -1,0 +1,11 @@
+{
+  "name": "健康打卡 App",
+  "short_name": "健康打卡",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f6f8fc",
+  "theme_color": "#4f46e5",
+  "lang": "zh-CN",
+  "description": "记录喝水、上厕所和动作完成情况的本地 PWA",
+  "icons": []
+}
